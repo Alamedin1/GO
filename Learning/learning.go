@@ -1,8 +1,8 @@
 package learning
 
-import (
-	"fmt"
-)
+import "fmt"
+
+// Если название структур начинается с большой буквы мы можем обратиться к ним в другом пакете
 
 type Shape interface { // должен содержать все методы первого и второго интерфейса
 	ShapeWithArea
@@ -27,12 +27,6 @@ func (s Square) Perimeter() float32 {
 
 func (s Square) Area() float32 {
 	return s.sideLenght * s.sideLenght
-}
-
-func main() {
-	square := Square{5}
-	printShapeArea(square)
-
 }
 
 func printShapeArea(shape Shape) { // shape - объект Shape - интерфейс Area - объект

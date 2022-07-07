@@ -2,35 +2,11 @@ package main
 
 import (
 	"fmt"
+	learning "golang-learning/basic/Learning"
 )
 
-type Shape interface { // должен содержать все методы первого и второго интерфейса
-	ShapeWithArea
-	ShapeWithPerimeter
-}
-
-type ShapeWithArea interface {
-	Area() float32
-}
-
-type ShapeWithPerimeter interface {
-	Perimeter() float32
-}
-
-type Square struct { // чтоб объект соответствовал интерфейсу shape он должен имплементировать все методы первого и второго интерфейса
-	sideLenght float32
-}
-
-func (s Square) Perimeter() float32 {
-	return s.sideLenght * 4
-}
-
-func (s Square) Area() float32 {
-	return s.sideLenght * s.sideLenght
-}
-
 func main() {
-	square := Square{5}
+	square := learning.Square{5}
 	printShapeArea(square)
 
 }
