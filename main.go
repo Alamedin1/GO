@@ -2,9 +2,34 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
+	learning "golang-learning/basic/Learning"
 )
 
+// type Queue struct {
+// 	Id     int
+// 	Pos    int
+// 	Speed  int
+// 	Status int
+// }
+
+//создать др. структуру и сделать
+
 func main() {
-	fmt.Println("My favorite number is", rand.Intn(10))
+	queue := &learning.TaskQueue{}
+	a := learning.QueueNode{Id: 1}
+	queue.Push(a)
+	InterfacePush(queue)
+	node, err := queue.Pull()
+	fmt.Println(node, err)
+
+	// var inter learning.QueueInterface
+	// inter = queue
+	// inter.Push(a)
+	// fmt.Println()
+}
+
+func InterfacePush(inter learning.QueueInterface) {
+	r := learning.QueueNode{Status: 3}
+	inter.Push(r)
+
 }
