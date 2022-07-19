@@ -1,62 +1,80 @@
 package learning
 
-import (
-	"errors"
-)
+import "errors"
 
 /***_________QUEUE_____________***/
 
 /**___________First struct________**/
-/*
-type QueueNode struct {
+
+type QueueNodeInt struct {
 	Id, Status, Parameters int
 }
 
-type TaskQueue struct {
-	Vqueue []QueueNode // нода (node)
+type QueueStructInt struct {
+	Iqueue []QueueNodeInt // нода (node)
 }
 
 type QueueInterface interface {
-	Push(node QueueNode) QueueNode
-	Pull() (QueueNode, error)
+	Push(node QueueNodeInt) QueueNodeInt
+	Pull() (QueueNodeInt, error)
 }
 
-func (q *TaskQueue) Push(node QueueNode) QueueNode {
-	q.Vqueue = append(q.Vqueue, node)
+func (q *QueueStructInt) Push(node QueueNodeInt) QueueNodeInt {
+	q.Iqueue = append(q.Iqueue, node)
 	return node
 }
 
-func (q *TaskQueue) Pull() (QueueNode, error) { // вытащить элемент с головы
-	if len(q.Vqueue) == 0 {
-		return QueueNode{}, errors.New("Empty Queue!")
+func (q *QueueStructInt) Pull() (QueueNodeInt, error) { // вытащить элемент с головы
+	if len(q.Iqueue) == 0 {
+		return QueueNodeInt{}, errors.New("Empty Queue!")
 	} else {
-		head := q.Vqueue[0]
-		q.Vqueue = q.Vqueue[1:len(q.Vqueue)]
+		head := q.Iqueue[0]
+		q.Iqueue = q.Iqueue[1:len(q.Iqueue)]
 		return head, nil
 	}
 }
-*/
+
+func (q *QueueStructInt) Pop(node QueueNodeInt) (QueueNodeInt, error) {
+	if len(q.Iqueue) == 0 {
+		return QueueNodeInt{}, errors.New("Empty Queue!")
+	} else {
+		q.Iqueue = q.Iqueue[:len(q.Iqueue)-1]
+		return node, nil
+	}
+}
+
 // func (q *TaskQueue) Pop(node QueueNode) (QueueNode, error) {
 
 // }
 
 /**___________Second struct________**/
 
-type QueueNodeStr struct {
-	Id, QuantityElems, Status string
+type QueueNodeStr struct { // ddefinition
+	Id            string
+	QuantityElems string
+	Status        string
 }
+
+type que QueueNodeStr
 
 type QueueStructStr struct {
 	Queue []QueueNodeStr
 }
 
+func NewQueueStructStr(lenght int) *QueueStructStr { // initialization
+	return &QueueStructStr{
+		Queue: make([]QueueNodeStr, lenght),
+	}
+
+}
+
 type QueueStrInterface interface {
 	Pull(node QueueNodeStr) (QueueNodeStr, error)
 	Push(node QueueNodeStr) (QueueNodeStr, error)
-	Pop() (QueueNodeStr, error)
+	// Pop() (QueueNodeStr, error)
 }
 
-func (q *QueueStructStr) Push(node QueueNodeStr) (QueueNodeStr, error) {
+func (q *QueueStructStr) Push(node QueueNodeStr) (QueueNodeStr, error) { // написать через head & tail
 	q.Queue = append(q.Queue, node)
 	return node, nil
 }
@@ -86,15 +104,13 @@ func (q *QueueStructStr) Pull(node QueueNodeStr) (QueueNodeStr, error) {
 	return head, Err
 }
 
-func (q *QueueStructStr) Pop() (QueueNodeStr, error) {
+func (q *QueueStructStr) Pop(node QueueNodeStr) (QueueNodeStr, error) {
 	if len(q.Queue) == 0 {
 		return QueueNodeStr{}, errors.New("Empty Queue!")
+	} else {
+		q.Queue = q.Queue[:len(q.Queue)-1]
+		return node, nil
 	}
-	FirstElem := q.Queue[0]
-	q.Queue = q.Queue[1:]
-	// fmt.Println("Delet Elem", FirstElem)
-	return FirstElem, nil
-
 }
 
 func ErrorString(node QueueNodeStr) error {

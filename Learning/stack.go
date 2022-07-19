@@ -1,32 +1,37 @@
 package learning
 
+import (
+	"errors"
+)
+
 /***_________STACK_____________***/
 
-type StackStruct struct {
-	Id, Status, Parameters [3]int
+type NodeStack struct {
+	Id, Status, Parameters int
 }
 
-type NodeStack struct {
-	Stack []StackStruct
+type StackStruct struct {
+	Stack []NodeStack
 }
 
 type StackInterface interface {
-	Push(o StackStruct) NodeStack
-	Pop() *StackStruct
+	Push(node NodeStack) NodeStack
+	Pop(node NodeStack) (NodeStack, error)
 }
 
-// func (q *Queue) Initialize() *Queue {
-// 	q.Vqueue = []Queue{}
-// 	return q
-// }
-
-func (q *NodeStack) Push(Max StackStruct) *NodeStack {
-	q.Stack = append(q.Stack, Max)
-	return q
+func (s *StackStruct) Push(node NodeStack) NodeStack {
+	s.Stack = append(s.Stack[:len(s.Stack)], node)
+	return node
 }
 
-func (q *NodeStack) Pop() *StackStruct {
-	Min := q.Stack[0]
-	q.Stack = q.Stack[1:len(q.Stack)]
-	return &Min
+func (s *StackStruct) Pop(node NodeStack) (NodeStack, error) {
+	if len(s.Stack) == 0 {
+		return node, errors.New("empty stack!")
+	} else {
+		node := s.Stack[len(s.Stack)-1]
+		s.Stack = s.Stack[:len(s.Stack)-1]
+		return node, nil
+		// L := len(s.Stack)
+		// return s.Stack[:L-1], nil
+	}
 }
