@@ -1,6 +1,8 @@
 package learning
 
-import "errors"
+import (
+	"errors"
+)
 
 /***_________QUEUE_____________***/
 
@@ -11,7 +13,18 @@ type QueueNodeInt struct {
 }
 
 type QueueStructInt struct {
-	Iqueue []QueueNodeInt // нода (node)
+	Iqueue                   []QueueNodeInt // нода (node)
+	Cap, Head, Tail, Numelem int
+}
+
+func NewQueueStructInt(lenght int) *QueueStructInt {
+	return &QueueStructInt{
+		Iqueue:  make([]QueueNodeInt, lenght),
+		Cap:     lenght,
+		Head:    0,
+		Tail:    0,
+		Numelem: 0,
+	}
 }
 
 type QueueInterface interface {
@@ -19,28 +32,91 @@ type QueueInterface interface {
 	Pull() (QueueNodeInt, error)
 }
 
-func (q *QueueStructInt) Push(node QueueNodeInt) QueueNodeInt {
-	q.Iqueue = append(q.Iqueue, node)
-	return node
+func (q *QueueStructInt) Push(node QueueNodeInt) (QueueNodeInt, error) {
+	if q.Cap == 0 {
+		return node, errors.New("capacity is nil")
+	}
+	if q.Tail == q.Cap {
+		return node, errors.New("capacity limit exceeded")
+	} else {
+		q.Iqueue[q.Tail] = node
+		q.Tail++
+		// q.Tail = (q.Tail + 1) % q.Cap
+		q.Numelem++
+		// fmt.Println(q.Iqueue[0], q.Tail, q.Numelem)
+	}
+	return node, nil
 }
 
-func (q *QueueStructInt) Pull() (QueueNodeInt, error) { // вытащить элемент с головы
+// func (q *QueueStructInt) Push(node QueueNodeInt) QueueNodeInt {
+
+// 	q.Iqueue = append(q.Iqueue, node)
+// 	return node
+// }
+
+// func (q *QueueStructInt) Pull() (QueueNodeInt, error) { // вытащить элемент с головы
+// 	if len(q.Iqueue) == 0 {
+// 		return QueueNodeInt{}, errors.New("Empty Queue!")
+// 	} else if q.Numelem == 0 {
+// 		return QueueNodeInt{}, errors.New("No elems")
+// 	} else {
+// 		return q.Iqueue[q.Head], nil
+// 	}
+// }
+
+func (q *QueueStructInt) Pull() (QueueNodeInt, error) {
 	if len(q.Iqueue) == 0 {
 		return QueueNodeInt{}, errors.New("Empty Queue!")
+	} else if q.Numelem == 0 {
+		return QueueNodeInt{}, errors.New("No elems")
 	} else {
-		head := q.Iqueue[0]
-		q.Iqueue = q.Iqueue[1:len(q.Iqueue)]
-		return head, nil
+		node := q.Iqueue[q.Head]
+		for i := q.Head; i < q.Tail-1; i++ {
+			q.Iqueue[i] = q.Iqueue[i+1]
+		}
+		q.Iqueue[q.Tail-1] = QueueNodeInt{}
+		q.Tail--
+		q.Numelem--
+		return node, nil
 	}
+}
+
+func (q *QueueStructInt) LenghtQueue() int {
+	return (q.Tail - q.Head + q.Cap) % q.Cap
 }
 
 func (q *QueueStructInt) Pop(node QueueNodeInt) (QueueNodeInt, error) {
-	if len(q.Iqueue) == 0 {
-		return QueueNodeInt{}, errors.New("Empty Queue!")
-	} else {
-		q.Iqueue = q.Iqueue[:len(q.Iqueue)-1]
-		return node, nil
+	Index := -1
+	for i := q.Head; i < q.Tail; i++ {
+		if q.Iqueue[i] == node {
+			Index = i
+			break
+		}
 	}
+	if Index != -1 {
+		for i := Index; i < q.Tail-1; i++ {
+			q.Iqueue[i] = q.Iqueue[i+1]
+		}
+		q.Iqueue[q.Tail-1] = QueueNodeInt{}
+	} else {
+		return node, errors.New("No element in queue")
+	}
+	return node, nil
+
+	// if index == q.Head {
+	// 	q.Pull()
+	// 	return index, node, errors.New("delet Head = index")
+	// } else if index > q.Head {
+	// 	node = q.Iqueue[index]
+	// 	q.Iqueue[index] = QueueNodeInt{}
+	// 	q.Head = index
+	// 	q.Numelem--
+	// 	return index, node, nil
+	// } else if index > q.Head && (q.Iqueue[index] == QueueNodeInt{}) ||
+	// 	index < q.Head && (q.Iqueue[index] == QueueNodeInt{}) {
+	// 	return index, node, errors.New("this elem has been removed ")
+	// }
+	// return index, node, nil
 }
 
 // func (q *TaskQueue) Pop(node QueueNode) (QueueNode, error) {
@@ -48,24 +124,21 @@ func (q *QueueStructInt) Pop(node QueueNodeInt) (QueueNodeInt, error) {
 // }
 
 /**___________Second struct________**/
-
+/*
 type QueueNodeStr struct { // ddefinition
 	Id            string
 	QuantityElems string
 	Status        string
 }
 
-type que QueueNodeStr
-
 type QueueStructStr struct {
 	Queue []QueueNodeStr
 }
 
-func NewQueueStructStr(lenght int) *QueueStructStr { // initialization
+func NewQueueStructStr(Lenght int) *QueueStructStr { // initialization
 	return &QueueStructStr{
-		Queue: make([]QueueNodeStr, lenght),
+		Queue: make([]QueueNodeStr, Lenght),
 	}
-
 }
 
 type QueueStrInterface interface {
@@ -75,7 +148,16 @@ type QueueStrInterface interface {
 }
 
 func (q *QueueStructStr) Push(node QueueNodeStr) (QueueNodeStr, error) { // написать через head & tail
-	q.Queue = append(q.Queue, node)
+	// q.Queue = append(q.Queue, node)
+	q.Queue = []
+	Tail := q.Queue[len(q.Queue)-1]
+	Head := q.Queue[0]
+	Lenght := len(q.Queue)
+
+	// q.Queue = node
+	// q.Queue[] = node
+	// Tail := q.Queue[len(q.Queue)-1]
+	fmt.Println(Head, Tail, Lenght)
 	return node, nil
 }
 
@@ -132,3 +214,4 @@ func (q *QueueStructStr) Empty() error {
 	}
 	return nil
 }
+*/
