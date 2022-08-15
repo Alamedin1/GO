@@ -10,9 +10,9 @@ type PrinterIface interface { // это тип полями которого я�
 	Print()
 }
 
-func (q *QueueStructInt) Print() {
-	fmt.Println(q.Iqueue)
-}
+// func (q *QueueStructInt) Print() {
+// 	fmt.Println(q.Iqueue)
+// }
 
 // принтер для очереди который в цикле вызывает принтер для ноды (q QueueNodeStr)printer
 

@@ -1,10 +1,5 @@
 package main
 
-import (
-	"fmt"
-	learning "golang-learning/basic/Learning"
-)
-
 /***_________QUEUE_____________***/
 
 /**___________First struct________**/
@@ -310,6 +305,9 @@ func main() {
 }
 */
 
+///__________Interfaces_____________///
+
+/*
 func main() {
 	newqueue := learning.NewQueueStructInt(3)
 
@@ -356,7 +354,6 @@ func (c *Cat) Run(Speed int) {
 }
 
 func AngryBirds(r Runner, speed int) {
-
 	r.Run(speed)
 }
 
@@ -364,3 +361,35 @@ func PrintAnyObject(AnyObject PrinterIface) {
 	AnyObject.Print()
 
 }
+*/
+/*
+func main() {
+	// air := learning.NewAir(0, 0, false, 0, 0)
+	// air := learning.Air{A: learning.NewPassengersArray(2)}
+	// car := learning.Car{PassengersArray: learning.NewPassengersArray(2)}
+	// passengerParam := learning.Passenger{Key: 123, PassportNum: 124}
+
+	// fmt.Println(air.A)
+	// _, err := air.A.Push(passengerParam)
+	// passengerParam = learning.Passenger{Key: 223, PassportNum: 224}
+	// _, err = car.Push(passengerParam)
+	// fmt.Println(air.A, "\n", car.PassengersArray, err)
+
+	Boeing := learning.NewAir(1, 1, false, 1200, 4000)
+	BMW := learning.NewCar(1, 1, false, 120, 2000)
+	Honda := learning.NewBike(1, 1, false, 100, 1500)
+	Moving(Boeing)
+	Moving(BMW)
+	Moving(Honda)
+
+}
+
+func Moving(t learning.Transport) {
+	t.Move()
+	t.Add(learning.Passenger{Key: 2312, PassportNum: 123123})
+}
+*/
+
+// func Add(x, y int) int {
+// 	return x + y
+// }

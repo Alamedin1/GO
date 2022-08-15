@@ -7,19 +7,20 @@ import (
 
 type Transport interface {
 	Move()
+	Add(node Passenger) (Passenger, error)
 }
 
 type Passenger struct {
 	Key, PassportNum int
 }
 
-type NodePassenger struct {
+type PassengersArray struct {
 	PassengerParam           []Passenger
 	Tail, Head, Numelem, Cap int
 }
 
-func NewPassenger(Lenght int) *NodePassenger {
-	return &NodePassenger{
+func NewPassengersArray(Lenght int) *PassengersArray {
+	return &PassengersArray{
 		PassengerParam: make([]Passenger, Lenght),
 		Tail:           0,
 		Head:           0,
@@ -28,7 +29,7 @@ func NewPassenger(Lenght int) *NodePassenger {
 	}
 }
 
-func (this *NodePassenger) Push(node Passenger) (Passenger, error) {
+func (this *PassengersArray) Add(node Passenger) (Passenger, error) {
 	if this.Cap == 0 {
 		return node, errors.New("capacity is nil")
 	}
@@ -44,55 +45,62 @@ func (this *NodePassenger) Push(node Passenger) (Passenger, error) {
 	return node, nil
 }
 
-type Air struct {
-	// NodePassenger
+type Air struct { //приватные поля с маленькой буквы не видны из внешних пакетов и функции
+	Passengers      *PassengersArray
 	Wings, Turbine  int
 	Motor           bool
 	Speed, Distance int
 }
 
+func (a *Air) Add(node Passenger) (Passenger, error) {
+	return a.Passengers.Add(node)
+}
+
 type Car struct {
-	// NodePassenger
+	*PassengersArray
 	Hood, Turbine   int
 	Motor           bool
 	Speed, Distance int
 }
 
 type Bike struct {
-	// NodePassenger
+	*PassengersArray
 	Rack, TelescopicFork int
 	Motor                bool
 	Speed, Distance      int
 }
 
-func NewAir(Wings, Turbine int, Motor bool,
+func NewAir(PassengersAmount, Wings, Turbine int, Motor bool,
 	Speed, Distance int) *Air {
 	return &Air{
-		Wings:    Wings,
-		Turbine:  Turbine,
-		Motor:    Motor,
-		Speed:    Speed,
-		Distance: Distance,
+		Passengers: NewPassengersArray(PassengersAmount),
+		Wings:      Wings,
+		Turbine:    Turbine,
+		Motor:      Motor,
+		Speed:      Speed,
+		Distance:   Distance,
 	}
 }
-func NewCar(Hood, Turbine int, Motor bool,
+func NewCar(PassengersAmount, Hood, Turbine int, Motor bool,
 	Speed, Distance int) *Car {
 	return &Car{
-		Hood:     Hood,
-		Turbine:  Turbine,
-		Motor:    Motor,
-		Speed:    Speed,
-		Distance: Distance,
+		PassengersArray: NewPassengersArray(PassengersAmount),
+		Hood:            Hood,
+		Turbine:         Turbine,
+		Motor:           Motor,
+		Speed:           Speed,
+		Distance:        Distance,
 	}
 }
-func NewBike(Rack, TelescopicFork int, Motor bool,
+func NewBike(PassengersAmount, Rack, TelescopicFork int, Motor bool,
 	Speed, Distance int) *Bike {
 	return &Bike{
-		Rack:           Rack,
-		TelescopicFork: TelescopicFork,
-		Motor:          Motor,
-		Speed:          Speed,
-		Distance:       Distance,
+		PassengersArray: NewPassengersArray(PassengersAmount),
+		Rack:            Rack,
+		TelescopicFork:  TelescopicFork,
+		Motor:           Motor,
+		Speed:           Speed,
+		Distance:        Distance,
 	}
 }
 

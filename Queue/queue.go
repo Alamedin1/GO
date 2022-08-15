@@ -1,12 +1,18 @@
-package learning
+package queue
 
-import (
-	"errors"
-)
+import "errors"
 
 /***_________QUEUE_____________***/
 
 /**___________First struct________**/
+
+//go:generate minimock -i QueueInterface -o ./
+
+type QueueInterface interface {
+	Push(node QueueNodeInt) (QueueNodeInt, error)
+	Pop(node QueueNodeInt) (QueueNodeInt, error)
+	Pull() (QueueNodeInt, error)
+}
 
 type QueueNodeInt struct {
 	Id, Status, Parameters int
@@ -27,17 +33,17 @@ func NewQueueStructInt(lenght int) *QueueStructInt {
 	}
 }
 
-type QueueInterface interface {
-	Push(node QueueNodeInt) QueueNodeInt
-	Pull() (QueueNodeInt, error)
-}
+var ErrorQueueEmp = errors.New("Empty Queue!")
+var ErrorNoElem = errors.New("No element in queue")
+var ErrorLenNil = errors.New("capacity is nil")
+var ErrorCapLimit = errors.New("capacity limit exceeded")
 
 func (q *QueueStructInt) Push(node QueueNodeInt) (QueueNodeInt, error) {
 	if q.Cap == 0 {
-		return node, errors.New("capacity is nil")
+		return node, ErrorLenNil
 	}
-	if q.Tail == q.Cap {
-		return node, errors.New("capacity limit exceeded")
+	if q.Tail == q.Cap && q.Cap != 0 {
+		return node, ErrorCapLimit
 	} else {
 		q.Iqueue[q.Tail] = node
 		q.Tail++
@@ -66,9 +72,9 @@ func (q *QueueStructInt) Push(node QueueNodeInt) (QueueNodeInt, error) {
 
 func (q *QueueStructInt) Pull() (QueueNodeInt, error) {
 	if len(q.Iqueue) == 0 {
-		return QueueNodeInt{}, errors.New("Empty Queue!")
+		return QueueNodeInt{}, ErrorQueueEmp
 	} else if q.Numelem == 0 {
-		return QueueNodeInt{}, errors.New("No elems")
+		return QueueNodeInt{}, ErrorNoElem
 	} else {
 		node := q.Iqueue[q.Head]
 		for i := q.Head; i < q.Tail-1; i++ {
@@ -99,7 +105,7 @@ func (q *QueueStructInt) Pop(node QueueNodeInt) (QueueNodeInt, error) {
 		}
 		q.Iqueue[q.Tail-1] = QueueNodeInt{}
 	} else {
-		return node, errors.New("No element in queue")
+		return node, ErrorNoElem
 	}
 	return node, nil
 

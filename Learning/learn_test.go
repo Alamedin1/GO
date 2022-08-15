@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestMain(m *testing.M) {
@@ -115,7 +113,7 @@ func TestAdd(t *testing.T) {
 		panic("PANIC!")
 	})
 
-	require.Equal(t, "The testing panic.")
+	// require.Equal(t, "The testing panic")
 
 	//testdown
 	// delete test data in db
