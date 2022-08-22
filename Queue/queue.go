@@ -6,7 +6,7 @@ import "errors"
 
 /**___________First struct________**/
 
-//go:generate minimock -i QueueInterface -o ./
+//go:generate minimock -i QueueInterface
 
 type QueueInterface interface {
 	Push(node QueueNodeInt) (QueueNodeInt, error)

@@ -1,13 +1,17 @@
 package queue
 
 import (
+	"errors"
 	"fmt"
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestQueue_1(t *testing.T) {
+	queue := NewQueueInterfaceMock(t)
+	queue.PushMock.Set(func(p QueueNodeInt) (QueueNodeInt, error) {
+		return p, errors.New(fmt.Sprintf("error %d", p))
+	})
+
 	// t.Run("push_error_lenght&cap", func(t *testing.T) {
 	// 	lenght := 0
 	// 	q := NewQueueStructInt(lenght)
@@ -21,20 +25,21 @@ func TestQueue_1(t *testing.T) {
 	// 	require.EqualError(t, ErrorLenNil, err.Error())
 	// 	require.EqualError(t, ErrorNoElem, err.Error())
 	// })
-	t.Run("push_error_lenght", func(t *testing.T) {
-		lenght := 0
-		q := NewQueueStructInt(lenght)
-		elemq := &QueueNodeInt{
-			Id:         1,
-			Status:     1,
-			Parameters: 1,
-		}
-		_, err := q.Push(*elemq)
-		fmt.Println(q.Cap)
-		require.Error(t, err)
-		require.EqualError(t, ErrorLenNil, err.Error())
-		require.EqualError(t, ErrorNoElem, err.Error())
-	})
+
+	//	t.Run("push_error_lenght", func(t *testing.T) {
+	//		lenght := 0
+	//		q := NewQueueStructInt(lenght)
+	//		elemq := &QueueNodeInt{
+	//			Id:         1,
+	//			Status:     1,
+	//			Parameters: 1,
+	//		}
+	//		_, err := q.Push(*elemq)
+	//		fmt.Println(q.Cap)
+	//		require.Error(t, err)
+	//		require.EqualError(t, ErrorLenNil, err.Error())
+	//		require.EqualError(t, ErrorNoElem, err.Error())
+	//	})
 }
 
 /*
