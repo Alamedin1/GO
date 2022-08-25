@@ -7,6 +7,7 @@ import (
 )
 
 func TestQueue_1(t *testing.T) {
+
 	queue := NewQueueInterfaceMock(t)
 	queue.PushMock.Set(func(p QueueNodeInt) (QueueNodeInt, error) {
 		return p, errors.New(fmt.Sprintf("error %d", p))

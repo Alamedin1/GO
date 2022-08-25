@@ -2,15 +2,24 @@ package learning
 
 import (
 	"fmt"
-	"queue"
 )
+
+//go:generate minimock -i PassengersQueueIface -o ./passengersqueue_mock.go
 
 type Transport interface {
 	Move()
 	Add(node Passenger) (Passenger, error)
 }
 
+type PassengersQueueIface interface {
+	Push(node Passenger) (Passenger, error)
+	Pop(node Passenger) (Passenger, error)
+	Pull() (Passenger, error)
+	List() []Passenger
+}
+
 type Passenger struct {
+	Name             string
 	Key, PassportNum int
 }
 
@@ -19,13 +28,13 @@ type Passenger struct {
 // 	Tail, Head, Numelem, Cap int
 // }
 
-// func NewPassengersArray(Lenght int) *PassengersArray {
+// func NewPassengersArray(lenght int) *PassengersArray {
 // 	return &PassengersArray{
-// 		PassengerParam: make([]Passenger, Lenght),
+// 		PassengerParam: make([]Passenger, lenght),
 // 		Tail:           0,
 // 		Head:           0,
 // 		Numelem:        0,
-// 		Cap:            Lenght,
+// 		Cap:            lenght,
 // 	}
 // }
 
@@ -45,32 +54,40 @@ type Passenger struct {
 // 	return node, nil
 // }
 
+// сделать вывод самого популярного имени пассажира в самолете
+// у air будет метод самых популярного имени пассажира( само много раз встречающегося имени в самолете)
+// добавить имя пассажира
+
 type Air struct { //приватные поля с маленькой буквы не видны из внешних пакетов и функции
-	Passengers      queue.QueueInterface
+	Passengers      PassengersQueueIface
 	Wings, Turbine  int
 	Motor           bool
 	Speed, Distance int
 }
 
-// func (a *Air) Add(node Passenger) (Passenger, error) {
-// 	return a.Passengers.Add(node)
-// }
+func (a *Air) GetAllPassengers() ([]Passenger, error) {
+	return nil, nil
+}
+
+func (a *Air) Add(node Passenger) (Passenger, error) {
+	return Passenger{}, nil
+}
 
 type Car struct {
-	Passengers      queue.QueueInterface
+	Passengers      PassengersQueueIface
 	Hood, Turbine   int
 	Motor           bool
 	Speed, Distance int
 }
 
 type Bike struct {
-	Passengers           queue.QueueInterface
+	Passengers           PassengersQueueIface
 	Rack, TelescopicFork int
 	Motor                bool
 	Speed, Distance      int
 }
 
-func NewAir(passengers queue.QueueInterface, wings, turbine int, motor bool,
+func NewAir(passengers PassengersQueueIface, wings, turbine int, motor bool,
 	speed, distance int) *Air {
 	return &Air{
 		Passengers: passengers,
