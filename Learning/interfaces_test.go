@@ -5,6 +5,7 @@ import (
 	"testing"
 )
 
+
 // заполнить самолет и получить всех пассажиров самолета
 
 func TestAir(t *testing.T) {
