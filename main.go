@@ -67,7 +67,7 @@ func InterfacePush(inter learning.QueueInterface) {
 */
 
 /**___________Second struct________**/
-/*
+
 func main() {
 	// queue := &learning.QueueStructStr{}
 	// // queue := learning.NewQueueStructStr(2)
@@ -128,7 +128,7 @@ func main() {
 	inter.Printer()
 
 }
-*/
+
 /** interface  */
 /*
 	queue := &learning.QueueStructStr{}
